@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <h2 class="mb-4">👋 Bienvenido al Panel de Control</h2>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card text-center h-100 border-primary">
+            <div class="card-body">
+                <h1 class="display-4 text-primary"><i class="bi bi-box-seam"></i></h1>
+                <h5 class="card-title">Gestión de Insumos</h5>
+                <p class="card-text">Ver catálogo, actualizar precios y stock.</p>
+                <a href="/inventario" class="btn btn-primary">Ir al Inventario</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card text-center h-100 border-danger">
+            <div class="card-body">
+                <h1 class="display-4 text-danger"><i class="bi bi-exclamation-triangle"></i></h1>
+                <h5 class="card-title">Alertas de Stock</h5>
+                <p class="card-text">Productos por agotarse.</p>
+                <a href="/reportes" class="btn btn-danger">Ver Reporte</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 mb-4">
+        <div class="card text-center h-100 border-success">
+            <div class="card-body">
+                <h1 class="display-4 text-success"><i class="bi bi-cart-check"></i></h1>
+                <h5 class="card-title">Compras</h5>
+                <p class="card-text">Registrar facturas de proveedores.</p>
+                <a href="/compras" class="btn btn-success">Nueva Compra</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2 text-success"><i class="bi bi-cart-check-fill"></i> Reporte de Compras Realizadas</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <button type="button" class="btn btn-outline-secondary" onclick="window.print()">
+            <i class="bi bi-printer"></i> Imprimir Reporte
+        </button>
+    </div>
+</div>
+
+<div class="alert alert-info" role="alert">
+    <strong>Historial de Adquisiciones:</strong> Detalle de los insumos comprados que han ingresado al stock.
+</div>
+
+{% if compras|length == 0 %}
+    <div class="text-center mt-5">
+        <h3 class="text-muted"><i class="bi bi-inbox"></i> Sin registros</h3>
+        <p class="lead">No se han registrado compras recientemente.</p>
+        <a href="/dashboard" class="btn btn-primary">Volver al Inicio</a>
+    </div>
+{% else %}
+    <div class="table-responsive shadow-sm">
+        <table class="table table-bordered table-hover">
+            <thead class="table-success">
+                <tr>
+                    <th>Fecha</th>
+                    <th>Proveedor</th>
+                    <th>Producto</th>
+                    <th>Cantidad Comprada</th>
+                    <th>Costo Unitario</th>
+                    <th>Total Factura</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in compras %}
+                <tr>
+                    <td>{{ item.fecha }}</td>
+                    <td>{{ item.proveedor }}</td>
+                    <td class="fw-bold">{{ item.producto }}</td>
+                    
+                    <td class="text-center fw-bold text-success">
+                        +{{ item.cantidad }} un.
+                    </td>
+                    
+                    <td class="text-end">${{ item.precio_unitario }}</td>
+                    <td class="text-end fw-bold">${{ item.total }}</td>
+                    
+                    <td class="text-center"><span class="badge bg-success">INGRESADO</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}
+{% endblock %}

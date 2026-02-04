@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow border-0">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0"><i class="bi bi-bandaid"></i> Registrar Consumo de Material</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST" action="/consumo">
+                    <div class="mb-4">
+                        <label for="id_insumo" class="form-label">Seleccione el Insumo Utilizado:</label>
+                        <select class="form-select form-select-lg" name="id_insumo" id="id_insumo" required>
+                            <option value="" selected disabled>-- Buscar en inventario --</option>
+                            {% for insumo in insumos %}
+                            <option value="{{ insumo._id }}">
+                                {{ insumo.nombre }} (Stock: {{ insumo.stock }} {{ insumo.unidad }})
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <div class="form-text">Se muestra el stock actual disponible.</div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="cantidad" class="form-label">Cantidad Gastada:</label>
+                        <input type="number" class="form-control form-control-lg" name="cantidad" min="1" required placeholder="Ej: 2">
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-success btn-lg">
+                            Confirmar Salida de Stock
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

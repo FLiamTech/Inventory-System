@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2 text-danger"><i class="bi bi-exclamation-triangle-fill"></i> Reporte de Stock Crítico</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <button type="button" class="btn btn-outline-secondary" onclick="window.print()">
+            <i class="bi bi-printer"></i> Imprimir Reporte
+        </button>
+    </div>
+</div>
+
+<div class="alert alert-warning" role="alert">
+    <strong>Importante:</strong> Los siguientes productos requieren reposición inmediata para evitar paradas operativas.
+</div>
+
+{% if insumos|length == 0 %}
+    <div class="text-center mt-5">
+        <h3 class="text-success"><i class="bi bi-check-circle-fill"></i> ¡Todo en orden!</h3>
+        <p class="lead">No hay productos con stock bajo en este momento.</p>
+        <a href="/dashboard" class="btn btn-primary">Volver al Inicio</a>
+    </div>
+{% else %}
+    <div class="table-responsive shadow-sm">
+        <table class="table table-bordered table-hover">
+            <thead class="table-danger">
+                <tr>
+                    <th>Producto</th>
+                    <th>Proveedor</th>
+                    <th>Stock Mínimo Permitido</th>
+                    <th>Stock Actual</th>
+                    <th>Déficit (Faltante)</th>
+                    <th>Estado</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in insumos %}
+                <tr>
+                    <td class="fw-bold">{{ item.nombre }}</td>
+                    <td>{{ item.proveedor }}</td>
+                    <td class="text-center">{{ item.stock_minimo }}</td>
+                    <td class="text-center fw-bold text-danger">{{ item.stock }}</td>
+                    <td class="text-center">
+                        {{ item.stock_minimo - item.stock }} un.
+                    </td>
+                    <td><span class="badge bg-danger">URGENTE</span></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endif %}
+{% endblock %}
