@@ -11,7 +11,7 @@ def init_db():
             {
                 "nombre": "Dra. Ana Mosquera",
                 "email": "amosquera@om.com",
-                "password": generate_password_hash("admin123"), # Contraseña encriptada
+                "password": generate_password_hash("admin123"),
                 "rol": "admin",
                 "fecha_creacion": datetime.now()
             },
@@ -44,7 +44,7 @@ def init_db():
                 "descripcion": "Jeringa 4g Tono A2",
                 "unidad": "Unidad",
                 "costo": 25.00,
-                "stock": 3, # STOCK BAJO INTENCIONAL (Para probar la alerta)
+                "stock": 3,
                 "stock_minimo": 5,
                 "proveedor": "Importadora Dental"
             },

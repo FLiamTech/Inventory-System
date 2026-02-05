@@ -1,30 +1,64 @@
 {% extends "layout.html" %}
-
+{% block body_class %}login-page{% endblock %}
 {% block content %}
-<div class="row justify-content-center mt-5">
-    <div class="col-md-4">
-        <div class="card shadow">
-            <div class="card-header bg-primary text-white text-center">
-                <h4>🦷 Acceso al Sistema</h4>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-5 col-lg-4">
+            
+            <div class="card card-login">
+                <div class="login-header">
+                    <i class="bi bi-heart-pulse-fill brand-icon"></i>
+                    <h4 class="mb-0 fw-bold">O.M. Integral</h4>
+                    <p class="small text-white-50 mb-0">Sistema de Gestión Odontológica</p>
+                </div>
+
+                <div class="card-body p-4 p-md-5 bg-white">
+                    
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                                    <i class="bi bi-exclamation-circle-fill"></i> {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <form action="/" method="POST">
+                        <div class="mb-4">
+                            <label for="email" class="form-label text-muted small fw-bold text-uppercase">Correo Electrónico</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-0 ps-0"><i class="bi bi-envelope text-primary"></i></span>
+                                <input type="email" class="form-control border-start-0 ps-0" name="email" id="email" placeholder="nombre@correo.com" required autofocus>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label for="password" class="form-label text-muted small fw-bold text-uppercase">Contraseña</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white border-0 ps-0"><i class="bi bi-lock text-primary"></i></span>
+                                <input type="password" class="form-control border-start-0 ps-0" name="password" id="password" placeholder="••••••••" required>
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-5">
+                            <button type="submit" class="btn btn-primary btn-login shadow-sm">
+                                INICIAR SESIÓN <i class="bi bi-arrow-right-short"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="card-footer text-center py-3 bg-light border-0">
+                    <small class="text-muted">¿Olvidaste tu contraseña? Contacta al admin.</small>
+                </div>
             </div>
-            <div class="card-body p-4">
-                <form method="POST" action="/">
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Correo Electrónico</label>
-                        <input type="email" class="form-control" id="email" name="email" required placeholder="admin@om.com">
-                    </div>
-                    <div class="mb-3">
-                        <label for="password" class="form-label">Contraseña</label>
-                        <input type="password" class="form-control" id="password" name="password" required placeholder="******">
-                    </div>
-                    <div class="d-grid gap-2">
-                        <button type="submit" class="btn btn-primary">Ingresar</button>
-                    </div>
-                </form>
+
+            <div class="text-center mt-3 text-muted small">
+                &copy; 2026 O.M. Odontología Integral
             </div>
-            <div class="card-footer text-center text-muted">
-                <small>Sistema de Inventario V1.0 - Flask/MongoDB</small>
-            </div>
+
         </div>
     </div>
 </div>

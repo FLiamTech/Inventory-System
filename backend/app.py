@@ -89,7 +89,7 @@ def inventario():
         return redirect(url_for('login'))
     
     if request.method == 'POST':
-        nombre = request.form['nombre']
+        nombre = request.form['nombre'].strip()
         descripcion = request.form['descripcion']
         unidad = request.form['unidad']
         costo = float(request.form['costo'])
@@ -97,27 +97,47 @@ def inventario():
         minimo = int(request.form['minimo'])
         proveedor = request.form['proveedor']
 
-        insumos_collection.insert_one({
-            "nombre" : nombre,
-            "descripcion" : descripcion,
-            "unidad" : unidad,
-            "costo" : costo,
-            "stock" : stock,
-            "stock_minimo" : minimo,
-            "proveedor" : proveedor
-        })
-
+        fecha_actual = datetime.now().strftime("%Y-%m-%d %H:%M")
         total_compra = costo * stock
+
+        producto_existente = insumos_collection.find_one({
+            "nombre" : {"$regex" : f"^{nombre}$", "$options" : "i"}
+        })
+        
+        if producto_existente:
+            nuevo_stock_total = producto_existente['stock'] + stock
+            insumos_collection.update_one(
+                {"_id": producto_existente['_id']},
+                {"$set": {
+                    "stock": nuevo_stock_total,
+                    "costo": costo,
+                    "proveedor": proveedor,
+                    "descripcion": descripcion 
+                }}
+            )
+            flash(f'🔄 Producto "{nombre}" ya existía. Se sumaron {stock} unidades al stock.', 'info')
+        else:
+            # Lógica de creación (Nuevo producto)
+            insumos_collection.insert_one({
+                "nombre" : nombre,
+                "descripcion" : descripcion,
+                "unidad" : unidad,
+                "costo" : costo,
+                "stock" : stock,
+                "stock_minimo" : minimo,
+                "proveedor" : proveedor
+            })
+            flash(f'Producto "{nombre}" creado exitosamente.', 'success')
+        
+        # Registrar en Historial de Compras (Siempre pasa)
         compras_collection.insert_one({
-            "fecha": datetime.now().strftime("%Y-%m-%d %H:%M"),
+            "fecha": fecha_actual,
             "proveedor": proveedor,
             "producto": nombre,
             "cantidad": stock,
             "precio_unitario": costo,
             "total": total_compra
         })
-
-        flash('Producto agregado correctamente al Inventario.', 'success')
         return redirect(url_for('inventario'))
     
     lista_insumos = insumos_collection.find()

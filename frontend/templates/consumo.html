@@ -1,40 +1,67 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="card shadow border-0">
-            <div class="card-header bg-success text-white">
-                <h4 class="mb-0"><i class="bi bi-bandaid"></i> Registrar Consumo de Material</h4>
-            </div>
-            <div class="card-body">
+<div class="row justify-content-center mt-4">
+    <div class="col-md-6 col-lg-5">
+        
+        <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
+            
+            <div style="background: linear-gradient(135deg, #198754 0%, #20c997 100%); height: 10px;"></div>
+
+            <div class="card-body p-5">
+                
+                <div class="text-center mb-4">
+                    <div class="icon-box icon-green shadow-sm">
+                        <i class="bi bi-bandaid-fill"></i>
+                    </div>
+                    <h3 class="fw-bold text-secondary">Registrar Salida</h3>
+                    <p class="text-muted small">Descontar insumos utilizados en pacientes.</p>
+                </div>
+
                 <form method="POST" action="/consumo">
+                    
                     <div class="mb-4">
-                        <label for="id_insumo" class="form-label">Seleccione el Insumo Utilizado:</label>
-                        <select class="form-select form-select-lg" name="id_insumo" id="id_insumo" required>
-                            <option value="" selected disabled>-- Buscar en inventario --</option>
+                        <label for="id_insumo" class="form-label fw-bold text-success small text-uppercase">
+                            <i class="bi bi-search me-1"></i> Insumo / Material
+                        </label>
+                        <select class="form-select form-select-lg login-input fs-6" name="id_insumo" id="id_insumo" required>
+                            <option value="" selected disabled>Seleccione el material...</option>
                             {% for insumo in insumos %}
-                            <option value="{{ insumo._id }}">
-                                {{ insumo.nombre }} (Stock: {{ insumo.stock }} {{ insumo.unidad }})
-                            </option>
+                                <option value="{{ insumo._id }}" {% if insumo.stock == 0 %}disabled{% endif %}>
+                                    {{ insumo.nombre }} 
+                                    (Disp: {{ insumo.stock }} {{ insumo.unidad }}) 
+                                    {% if insumo.stock <= insumo.stock_minimo %}[⚠️ BAJO]{% endif %}
+                                </option>
                             {% endfor %}
                         </select>
-                        <div class="form-text">Se muestra el stock actual disponible.</div>
+                        <div class="form-text small ms-1">
+                            * Los productos con stock 0 aparecen deshabilitados.
+                        </div>
                     </div>
 
                     <div class="mb-4">
-                        <label for="cantidad" class="form-label">Cantidad Gastada:</label>
-                        <input type="number" class="form-control form-control-lg" name="cantidad" min="1" required placeholder="Ej: 2">
+                        <label for="cantidad" class="form-label fw-bold text-success small text-uppercase">
+                            <i class="bi bi-123 me-1"></i> Cantidad a Descontar
+                        </label>
+                        <input type="number" class="form-control form-control-lg login-input fs-6" name="cantidad" min="1" required placeholder="Ej: 1">
                     </div>
 
-                    <div class="d-grid">
-                        <button type="submit" class="btn btn-success btn-lg">
-                            Confirmar Salida de Stock
+                    <div class="d-grid mt-5">
+                        <button type="submit" class="btn btn-success btn-lg rounded-pill shadow-sm fw-bold">
+                            CONFIRMAR CONSUMO <i class="bi bi-check-lg ms-2"></i>
                         </button>
                     </div>
+
                 </form>
             </div>
+            
+            <div class="card-footer bg-light text-center border-0 py-3">
+                <a href="/dashboard" class="text-decoration-none text-muted small">
+                    <i class="bi bi-arrow-left"></i> Volver!
+                </a>
+            </div>
         </div>
+
     </div>
 </div>
 {% endblock %}
